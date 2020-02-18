@@ -3,7 +3,9 @@
     "silex/silex": "^2.0.4",
     "monolog/monolog": "^1.22",
     "twig/twig": "^2.0",
-    "symfony/twig-bridge": "^3"
+    "symfony/twig-bridge": "^3",
+    "abhilashpujari/php-restservice": "dev-master",
+    "fzaninotto/faker": "^1.9"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
