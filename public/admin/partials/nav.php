@@ -6,6 +6,10 @@
 				<li class="active">
 					<a href="/admin"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
 				</li>
+				<li class="menu-title">Users</li>
+				<li>
+					<a href="?page=register-user"> <i class="menu-icon ti-user"></i>Register </a>
+				</li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</nav>
