@@ -42,6 +42,10 @@ $faker = Faker\Factory::create();
 							<div class="col-12 col-md-9"><input type="text" id="text-input" name="pin" class="form-control"></div>
 						</div>
 						<div class="row form-group">
+							<div class="col col-md-3"><label for="text-input" class=" form-control-label">Password</label></div>
+							<div class="col-12 col-md-9"><input type="text" id="text-input" name="password" class="form-control"></div>
+						</div>
+						<div class="row form-group">
 							<div class="col col-md-3"><label for="text-input" class=" form-control-label">Nationality ID</label></div>
 							<div class="col-12 col-md-9"><input type="text" id="text-input" name="nationality_id" value="FRA" class="form-control"></div>
 						</div>
