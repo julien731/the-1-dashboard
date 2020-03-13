@@ -25,6 +25,7 @@ if ( 'true' === $create_user ) {
 		'citizen_id' => filter_input( INPUT_POST, 'citizen_id', FILTER_SANITIZE_STRING ),
 		'email' => filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING ),
 		'pin' => filter_input( INPUT_POST, 'pin', FILTER_SANITIZE_STRING ),
+		'password' => filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING ),
 	];
 
 	foreach ( $options as $option => $value ) {
