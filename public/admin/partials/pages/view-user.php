@@ -5,6 +5,9 @@ $create_user = filter_input( INPUT_POST, 'create_user', FILTER_SANITIZE_STRING )
 
 if ( 'true' === $create_user ) {
 
+	$pdpa = filter_input( INPUT_POST, 'marketing', FILTER_SANITIZE_STRING );
+	$tc = filter_input( INPUT_POST, 'tc', FILTER_SANITIZE_STRING );
+
 	// Mandatory fields.
 	$payload = [
 		'first_name' => filter_input( INPUT_POST, 'first_name', FILTER_SANITIZE_STRING ),
@@ -12,8 +15,8 @@ if ( 'true' === $create_user ) {
 		'mobile_country' => filter_input( INPUT_POST, 'phone_prefix', FILTER_SANITIZE_STRING ),
 		'mobile' => filter_input( INPUT_POST, 'phone_number', FILTER_SANITIZE_STRING ),
 		'otp_request_id' => 'request_for_development',
-		'marketing_consent' => true,
-		'tc' => true,
+		'marketing_consent' => 'Y' === $pdpa ? true : false,
+		'tc' => 'Y' === $tc ? true : false,
 		'nationality_id' => filter_input( INPUT_POST, 'nationality_id', FILTER_SANITIZE_STRING ),
 		'date_of_birth' => filter_input( INPUT_POST, 'date_of_birth', FILTER_SANITIZE_STRING ),
 	];
@@ -75,6 +78,9 @@ if ( 'true' === $create_user ) {
 			'accounts',
 			[ 'form_params' => $payload ]
 		);
+
+		$data = json_decode( $response->getBody(), true );
+
 	} catch ( \GuzzleHttp\Exception\ClientException $e ) {
 
 		$error = json_decode( $e->getResponse()->getBody(), true );
@@ -110,7 +116,11 @@ if ( 'true' === $create_user ) {
 				<div class="card-body card-block">
 					<pre>
 						<code>
-							<?php print_r( $response->data ); ?>
+							<?php
+							echo '<pre><code>';
+							print_r( $data['data'] );
+							echo '</pre></code>';
+							?>
 						</code>
 					</pre>
 				</div>
