@@ -61,6 +61,30 @@ $faker = Faker\Factory::create();
 							<div class="col col-md-3"><label for="text-input" class=" form-control-label">Citizen ID</label></div>
 							<div class="col-12 col-md-9"><input type="text" id="text-input" name="citizen_id" class="form-control"></div>
 						</div>
+						<div class="row form-group">
+							<div class="col col-md-3"><label class=" form-control-label">T&C</label></div>
+							<div class="col col-md-9">
+								<div class="form-check">
+									<div class="checkbox">
+										<label for="tc" class="form-check-label ">
+											<input type="checkbox" id="tc" name="tc" value="Y" class="form-check-input" checked="checked">Accept
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col col-md-3"><label class=" form-control-label">PDPA</label></div>
+							<div class="col col-md-9">
+								<div class="form-check">
+									<div class="checkbox">
+										<label for="marketing" class="form-check-label ">
+											<input type="checkbox" id="marketing" name="marketing" value="Y" class="form-check-input" checked="checked">Accept
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="form-actions form-group">
 							<input type="hidden" name="create_user" value="true">
 							<button type="submit" class="btn btn-primary btn-sm">Submit</button>
