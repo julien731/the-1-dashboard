@@ -1,5 +1,5 @@
 <?php
-use RestService\RestService;
+use GuzzleHttp\Client;
 
 $create_user = filter_input( INPUT_POST, 'create_user', FILTER_SANITIZE_STRING );
 
@@ -34,43 +34,68 @@ if ( 'true' === $create_user ) {
 		}
 	}
 
-	$restService = new RestService();
+	$client = new Client([
+		// Base URI is used with relative requests
+		'base_uri' => 'https://uat-api.the1.co.th/v2/',
+	]);
+
+	// Prepare headers.
+	$headers = [
+		'Content-Type' => 'application/json',
+		'Accept-Language' => 'en',
+	];
 
 	// 1. Request registration OTP.
-	$request_otp = $restService
-		->setEndpoint('https://uat-api.the1.co.th')
-		->setRequestHeaders( [
-			'Content-Type' => 'application/json',
-			'Accept-Language' => 'en',
-		] )
-		->post('/v2/otps?type=registration', [
-				'mobile_country_code' => $payload['mobile_country'],
-				'mobile_number' => $payload['mobile'],
-				'type' => 'registration',
-		] );
+	$request_otp = $client->request(
+		'POST',
+		'otps?type=registration',
+		[ 'form_params' => [
+			'mobile_country_code' => $payload['mobile_country'],
+			'mobile_number' => $payload['mobile'],
+			'type' => 'registration',
+		] ]
+	);
 
-	$opt_request_id = $request_otp->data->attributes->request_id;
+	$otp_response = json_decode( $request_otp->getBody(), true );
+	$opt_request_id = $otp_response['data']['attributes']['request_id'];
 
 	// 2. Verify OTP
-	$verify_otp = $restService
-		->setEndpoint('https://uat-api.the1.co.th')
-		->setRequestHeaders( [
-			'Content-Type' => 'application/json',
-			'Accept-Language' => 'en',
-		] )
-		->post('/v2/otps/verify', [
+	$request_otp = $client->request(
+		'POST',
+		'otps/verify',
+		[ 'form_params' => [
 			'otp_request_id' => $opt_request_id,
 			'otp_code' => '123456',
-		] );
+		] ]
+	);
 
-	$response = $restService
-		->setEndpoint('https://uat-api.the1.co.th')
-		->setRequestHeaders( [
-			'Content-Type' => 'application/json',
-			'Accept-Language' => 'en',
-		] )
-		->post('/v2/accounts', $payload );
+	try {
+		$response = $client->request(
+			'POST',
+			'accounts',
+			[ 'form_params' => $payload ]
+		);
+	} catch ( \GuzzleHttp\Exception\ClientException $e ) {
 
+		$error = json_decode( $e->getResponse()->getBody(), true );
+
+		if ( isset( $error['errors'][0]['meta']['response'] ) ) {
+			echo '<h2>Response</h2>';
+			echo '<pre><code>';
+			print_r( $error['errors'][0]['meta']['response'] );
+			echo '</pre></code>';
+		}
+
+		if ( isset( $error['errors'][0]['meta']['request'] ) ) {
+			echo '<h2>Request</h2>';
+			echo '<pre><code>';
+			print_r( $error['errors'][0]['meta']['request'] );
+			echo '</pre></code>';
+		}
+
+		return;
+
+	}
 }
 ?>
 <div class="animated fadeIn">
